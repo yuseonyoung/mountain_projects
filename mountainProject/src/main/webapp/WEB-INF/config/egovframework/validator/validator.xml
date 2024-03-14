@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+<!-- 
+<form-validation>
+
+    <formset>
+        <form name="sampleVO">
+        	<field property="name" depends="required">
+        		<arg0 key="title.sample.name" />
+			</field>
+			<field property="description" depends="required">
+                <arg0 key="title.sample.description" />
+            </field>
+        	<field property="regUser" depends="required">
+        		<arg0 key="title.sample.regUser" />
+			</field>
+        </form>
+    </formset>
+	 <formset>
+	        <form name="totalBoardVO">
+	            <field property="ctnt">
+	                <arg0 key="title.totalBoardVO.ctnt" />
+	                <var>
+	                    <var-name>maxlength</var-name>
+	                    <var-value>1000</var-value>
+	                </var>
+	            </field>
+	            <field property="cdate">
+	                <arg0 key="title.totalBoardVO.cdate" />
+	            </field>
+	            <field property="fileCode">
+	                <arg0 key="title.totalBoardVO.fileCode" />
+	                <var>
+	                    <var-name>required</var-name>
+	                    <var-value>true</var-value>
+	                </var>
+	            </field>
+	            <field property="userId">
+	                <arg0 key="title.totalBoardVO.userId" />
+	            </field>
+	            <field property="recQty">
+	                <arg0 key="title.totalBoardVO.recQty" />
+	                <var>
+	                    <var-name>minlength</var-name>
+	                    <var-value>1</var-value>
+	                </var>
+	            </field>
+	            <field property="mntnNm">
+	                <arg0 key="title.totalBoardVO.mntnNm" />
+	            </field>
+	            <field property="participationPee">
+	                <arg0 key="title.totalBoardVO.participationPee" />
+	                <var>
+	                    <var-name>minlength</var-name>
+	                    <var-value>1</var-value>
+	                </var>
+	            </field>
+	            <field property="boardTitle">
+	                <arg0 key="title.totalBoardVO.boardTitle" />
+	                <var>
+	                    <var-name>maxlength</var-name>
+	                    <var-value>100</var-value>
+	                </var>
+	            </field>
+	        </form>
+	    </formset>
+</form-validation> -->

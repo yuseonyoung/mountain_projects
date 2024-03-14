@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.6.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+ <!-- 	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.factory.PasswordEncoderFactories"
+		factory-method="createDelegatingPasswordEncoder" />
+
+	<security:authentication-manager
+		id="authenticationManager">
+		<security:authentication-provider
+			user-service-ref="UserDAO">
+			<security:password-encoder ref="passwordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+ 	<bean id="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
+		<security:filter-chain-map request-matcher="ant">
+			<security:filter-chain pattern="/**" filters="securityFilterChain" />
+		</security:filter-chain-map>
+	</bean>
+ -->
+
+<!-- 	<sec:http auto-config="true">
+	<sec:form-login login-page="/login"
+		login-processing-url="/login" username-parameter="empCd"
+		password-parameter="empPw"
+		authentication-success-handler-ref="customAuthenticationSuccessHandler"
+		authentication-failure-handler-ref="customAuthenticationFailureHandler" />
+
+	<sec:remember-me key="aimKey"
+		remember-me-parameter="remember-me" token-validity-seconds="604800" />
+	<sec:session-management>
+		<sec:concurrency-control max-sessions="1"
+			expired-url="/login/duplicate" />
+	</sec:session-management>
+	<sec:logout logout-url="/logout" logout-success-url="/" />
+	<sec:intercept-url pattern="/findpw"
+		access="permitAll" />
+	<sec:intercept-url pattern="/login"
+		access="permitAll" />
+	<sec:intercept-url pattern="/logout"
+		access="permitAll" />
+ -->	
+</beans>

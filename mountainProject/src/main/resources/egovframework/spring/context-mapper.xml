@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+		
+	<!-- SqlSession setup for MyBatis Database Layer -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:typeAliasesPackage="egovframework.burin.cmmn.**.vo">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/egovframework/sqlmap/postgre/sql-mapper-config.xml" />
+		<property name="mapperLocations" value="classpath*:/egovframework/sqlmap/postgre/mappers/**/*.xml" />
+	</bean>
+	
+	<!-- Mapper 스캔 설정 -->
+	<mybatis-spring:scan base-package="egovframework.burin.cmmn.user.dao" annotation="org.egovframe.rte.psl.dataaccess.mapper.Mapper" />
+	
+ 	<!--Mapper라고쓰면 얘가 bean으로 만들어줌 -->
+ 	<bean class="org.egovframe.rte.psl.dataaccess.mapper.MapperConfigurer">
+		<property name="basePackage" value="egovframework" />
+	</bean>
+	
+</beans>

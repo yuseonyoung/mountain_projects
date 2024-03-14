@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.burin.cmmn.board.dao.BoardDao">
+	<!-- 전체게시물중 board와 uservo 1:1 매핑  -->
+	<!-- RecruitementBoardVO 와 boardVO 1:1 매핑 -->
+	<resultMap type="egovframework.burin.cmmn.board.vo.RecruitmentBoardVO" id="RBoardMap" autoMapping="true">
+			<id property="boardId" column="BOARD_ID"/>
+			<association property="boardVO" javaType="egovframework.burin.cmmn.board.vo.BoardVO" autoMapping="true"/>
+	</resultMap>
+	
+	<resultMap type="egovframework.burin.cmmn.board.vo.BoardVO" id="publicBoardMap" autoMapping="true">
+			<id property="boardId" column="BOARD_ID"/>
+			<association property="userDetail" javaType="UserVO" autoMapping="true"/>
+	</resultMap>
+	
+	<select id="selectPublicBoardList" parameterType="int" resultMap="publicBoardMap">
+		
+		SELECT *,
+		    (SELECT COUNT(*) FROM boardlike WHERE board_id = c.board_id) as likeQty
+		FROM (
+		    SELECT 
+		        a.board_id, 
+		        a.ctnt, 
+		        a.cdate, 
+		        a.file_code, 
+		        a.scope,
+		        a.b_division,
+		        a.user_id,
+		        b.name
+		    FROM 
+		        board a
+		    JOIN 
+		        "USER" b ON a.user_id = b.user_id
+		    WHERE
+		    	1=1
+		    	 and b_division = 'BD'
+				 and scope = 'PUBLIC'     
+		    ORDER BY 
+		        TO_DATE(LEFT(board_id, 8), 'YYYYMMDD') DESC, 
+		        CAST(RIGHT(board_id, 5) AS INTEGER) DESC 
+		    OFFSET #{page} ROWS
+		    LIMIT 10
+		) AS c
+		ORDER BY 
+		    board_id DESC
+	</select>
+	
+	
+	<select id="selectPartialBoardList" parameterType="int" resultMap="publicBoardMap">
+		
+		SELECT *,
+		    (SELECT COUNT(*) FROM boardlike WHERE board_id = c.board_id) as likeQty
+		FROM (
+		    SELECT 
+		        a.board_id, 
+		        a.ctnt, 
+		        a.cdate, 
+		        a.file_code, 
+		        a.scope,
+		        a.b_division,
+		        a.user_id,
+		        b.name
+		    FROM 
+		        board a
+		    JOIN 
+		        "USER" b ON a.user_id = b.user_id
+		    WHERE
+		    	1=1
+		    	 and b_division = 'BD'
+				 and scope = 'PARTIAL'     
+		    ORDER BY 
+		        TO_DATE(LEFT(board_id, 8), 'YYYYMMDD') DESC, 
+		        CAST(RIGHT(board_id, 5) AS INTEGER) DESC 
+		    OFFSET #{page} ROWS
+		    LIMIT 10
+		) AS c
+		ORDER BY 
+		    board_id DESC
+	</select>
+	
+	<insert id="insertBoardLike" parameterType="egovframework.burin.cmmn.board.vo.BoardLikeVO">
+		INSERT INTO boardlike (user_id, board_id)
+		VALUES(#{userId},#{boardId})
+	</insert>
+	
+	<delete id="deleteBoardLike" parameterType="egovframework.burin.cmmn.board.vo.BoardLikeVO">
+	    DELETE FROM boardlike
+	    WHERE user_id = #{userId} AND board_id = #{boardId}
+	</delete>
+	
+	<select id="selectBoardLikeList" parameterType="egovframework.burin.cmmn.board.vo.BoardLikeVO" resultType="Integer">
+		SELECT 
+			count(*)
+		FROM 
+			boardlike
+		where user_id =#{userId} and board_id = #{boardId}	
+	</select>
+	
+	<select id="selectBoardLikeBoardCount" parameterType="egovframework.burin.cmmn.board.vo.BoardLikeVO" resultType="Integer">
+		SELECT 
+			count(*) 
+		FROM 
+			boardlike
+		where board_id = #{boardId}	
+	</select>
+	
+	<select id="selectBoardLikeUserCount" parameterType="egovframework.burin.cmmn.board.vo.BoardLikeVO" resultType="egovframework.burin.cmmn.board.vo.BoardLikeVO">
+		SELECT 
+			board_id,user_id
+		FROM 
+			boardlike
+		where user_id = #{userId} 	
+	</select>
+	
+	<select id="selectBoardFileCode" parameterType="string" resultType="string">
+	   	select 
+	   		file_code
+	   	from
+	   		board
+	   	where
+	   		board_id = #{fileCode}
+	</select>
+	
+	<insert id="insertPublicBoard" parameterType="egovframework.burin.cmmn.board.vo.BoardVO">
+	    INSERT INTO board (board_id, ctnt, cdate, file_code, "scope", b_division, user_id)
+	    SELECT 
+	        TO_CHAR(CURRENT_DATE, 'YYYYMMDD') || 'B' || LPAD((COALESCE(MAX(SUBSTRING(board_id FROM '\d+$')::INTEGER), 0) + 1)::TEXT, 5, '0') AS new_board_id,
+	        #{ctnt}, CURRENT_TIMESTAMP, #{fileCode}, #{scope}, 'BD', #{userId}
+	    FROM 
+	        board  
+	    WHERE
+	        board_id LIKE TO_CHAR(CURRENT_DATE, 'YYYYMMDD') || '%'
+	</insert>
+	
+	<!-- rBoard 전체 갯수 -->
+	<select id="rBoardCount" resultType="int">
+		select 
+			count(*) 
+		from 
+			board 
+		where 
+			b_division ='RBD'
+	</select>
+	
+	<!-- 페이징 적용한 rBoardList 조회 -->
+	<select id="selectRecruitmentBoardList" resultMap="RBoardMap">
+		
+		SELECT *
+		FROM (
+		    SELECT
+		        ROW_NUMBER() OVER (ORDER BY board_id DESC) AS rNum,
+		        board_id,
+		        ctnt,
+		        file_code,
+		        b_division,
+		        inqire_qty,
+		        rec_qty,
+		        mntn_nm,
+		        board_title,
+		        participation_pee,
+		        deadline_status,
+		        cdate
+		    FROM (
+		        SELECT a.board_id,
+		               a.ctnt,
+		               a.file_code,
+		               a.b_division,
+		               b.inqire_qty,
+		               b.rec_qty,
+		               b.mntn_nm,
+		               b.board_title,
+		               b.participation_pee,
+		               b.deadline_status,
+		               a.cdate
+		        FROM board a
+		        INNER JOIN r_board b ON a.board_id = b.board_id
+		    ) AS subquery
+		) AS subquery2
+		ORDER BY board_id DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectMapData" resultType="egovframework.burin.cmmn.board.vo.MapVO">
+		select 
+			bjcd as area_code,name as area_name, ST_AsGeoJSON(geom) as geom 
+		from  
+			boundarymap_4326
+	</select>
+	
+	<select id="selectMountainInfo" parameterType="String" resultType="egovframework.burin.cmmn.board.vo.MountainInfoVO">
+		select 
+			ROW_NUMBER() OVER () AS rnum,*
+		from(
+			SELECT 
+			   mtncd,frtrlnm, lat ,lot, aslaltide  ,SPLIT_PART(REPLACE(addrnm, ',', ''), ' ', 1) AS addrnm
+			FROM 
+			    mountain_info_100
+		)
+		where 
+			addrnm = #{addrnm}
+	</select>
+	<!-- selectKey를 이용하여 생성전에 미리 board_id를 만들어놓고 insertRboardDetail에서 사용할 수 있게 함 -->
+	<insert id="insertRboard" parameterType="egovframework.burin.cmmn.board.vo.BoardVO">
+	    <selectKey keyProperty="boardId" resultType="java.lang.String" order="BEFORE">
+	        SELECT TO_CHAR(CURRENT_DATE, 'YYYYMMDD') || 'B' || LPAD((COALESCE(MAX(SUBSTRING(board_id FROM '\d+$')::INTEGER), 0) + 1)::TEXT, 5, '0') AS board_id
+	        FROM board  
+	        WHERE board_id LIKE TO_CHAR(CURRENT_DATE, 'YYYYMMDD') || '%'
+	    </selectKey>
+	    INSERT INTO board (board_id, ctnt, cdate, file_code, "scope", b_division, user_id)
+	    VALUES 
+	    (
+	        #{boardId}, #{ctnt}, CAST(#{cdate} AS DATE), #{fileCode}, 'PUBLIC', 'RBD', #{userId}
+	    )
+	</insert>
+
+	
+	<insert id="insertRboardDetail" parameterType="egovframework.burin.cmmn.board.vo.RecruitmentBoardVO">
+	  	INSERT INTO r_board(board_id, inqire_qty, rec_qty, mntn_nm, participation_pee, board_title, deadline_status)
+		VALUES(#{boardId}, 0, #{recQty}, #{mntnNm}, #{participationPee}, #{boardTitle}, 'N')
+	</insert>
+	
+	<select id="selectRboardDetail" parameterType="String" resultType="java.util.HashMap">
+		select 
+			a.board_id "boardId" ,a.file_code "fileCode",a.user_id "userId", a.cdate "cdate",a.ctnt "ctnt",b.mntn_nm "mntnNm",b.participation_pee "participationPee",b.board_title "boardTitle",b.rec_qty "recQty"  
+		from 
+			board a , r_board b
+		where 1=1
+			and a.board_id  = b.board_id 
+			and b.board_id = #{boardId}
+	</select>
+	
+</mapper>

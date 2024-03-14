@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+ 
+<tiles-definitions>
+	<definition name="abstractDef" template="/WEB-INF/jsp/mainTemplate.jsp">
+		<put-attribute name="headerMenu" value="/include/headerMenu.jsp" />
+		<put-attribute name="leftMenu" value="/include/leftMenu.jsp" />
+		<put-attribute name="rightMenu" value="/include/rightMenu.jsp"/>
+	</definition>
+	
+	
+	
+	<definition name="login/loginForm" template="/WEB-INF/jsp/login/loginForm.jsp">
+	    <put-attribute name="content" value="/WEB-INF/jsp/login/loginForm.jsp" />
+	</definition>
+
+	
+	<definition name="*/*" extends="abstractDef">
+		<put-attribute name="content" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+	</definition>
+</tiles-definitions>

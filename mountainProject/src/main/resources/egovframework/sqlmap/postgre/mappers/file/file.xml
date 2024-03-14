@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.burin.cmmn.file.dao.FileDao">
+	
+	<!-- 해당 fileCode에 맞는 파일의 정보를 조회 -->
+	<select id="selectFile" parameterType="string" resultType="egovframework.burin.cmmn.file.vo.FileVO">
+		SELECT 
+			file_code, origin_nm, save_nm, "path", "size",file_extension
+		FROM 
+			file
+		WHERE
+			file_code = #{fileCode}	
+	</select>
+	
+	<!-- 가장 최근에 추가된 fileCode를 가져옴 -->
+	<select id="selectRecnetFileCode" resultType="String" parameterType="String">
+		select 
+			file_code
+		from file
+		where 
+			save_nm =#{saveNm}
+	</select>
+	
+	<!-- insert시 동적으로 현재 날짜를 기준으로 가장 높은 값을 조회하여 그값에 +1을 하여 file_code를 생성하여 넣어준다. -->
+	<insert id="insertFile" parameterType="egovframework.burin.cmmn.file.vo.FileVO">
+	    INSERT INTO file (file_code, origin_nm, save_nm, "path", "size", file_extension)
+		SELECT 
+		    TO_CHAR(CURRENT_DATE, 'YYYYMMDD') || 'F' || LPAD((COALESCE(MAX(SUBSTRING(f.file_code FROM '\d+$')::INTEGER), 0) + 1)::TEXT, 5, '0') AS new_file_code,
+		    #{originNm}, #{saveNm}, #{path}, #{size}, #{fileExtension}
+		FROM 
+		    (SELECT file_code FROM file WHERE file_code LIKE TO_CHAR(CURRENT_DATE, 'YYYYMMDD') || '%') f
+
+	</insert>
+
+	
+	
+	
+</mapper>
+

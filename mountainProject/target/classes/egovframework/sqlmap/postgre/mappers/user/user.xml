@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.burin.cmmn.user.dao.UserDao">
+	
+	<select id="userList" resultType="UserVO">
+	    SELECT user_id, pwdno, file_code, badge_qty, pnumber, name, nick_nm, athr
+		FROM public."USER"
+	</select>
+	
+	<select id="userDetail" parameterType="String" resultType="UserVO">
+	    SELECT user_id, pwdno, file_code, badge_qty, pnumber, name, nick_nm, athr
+		FROM public."USER"
+		WHERE user_id = #{userId}
+	</select>
+	
+	
+</mapper>

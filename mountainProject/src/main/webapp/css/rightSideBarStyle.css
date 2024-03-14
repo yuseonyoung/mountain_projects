@@ -1,0 +1,69 @@
+@charset "UTF-8";
+#rightbar-wrapper {
+   position: fixed;
+   right: 0;
+   width: 250px;
+   height: 100%;
+   overflow-y: auto;
+   background: rgba(17, 17, 17, 0.75);
+   -webkit-transition: all 0.5s ease;
+   -moz-transition: all 0.5s ease;
+   -o-transition: all 0.5s ease;
+   transition: all 0.5s ease;
+   z-index: 1;
+}
+
+#wrapper {
+    overflow-x: hidden;
+    position: relative;
+}
+
+#rightbar-wrapper {
+    position: fixed;
+    margin-right: 20px;
+    top: 0;
+    right: 0;
+    width: 250px; /* right-bar의 너비를 조정 */
+    height: 100%;
+    overflow-y: auto;
+    background: rgba(17, 17, 17, 0.75);
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    z-index: 1;
+}
+
+#rightbar-wrapper ul {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+}
+
+#rightbar-wrapper li {
+   line-height: 40px;
+}
+
+#rightbar-wrapper li a {
+   display: block;
+   text-decoration: none;
+   color: #999999;
+   padding: 10px 20px; 
+}
+
+#rightbar-wrapper li a:hover {
+   text-decoration: none;
+   color: #fff;
+   background: rgba(255, 255, 255, 0.2);
+}
+
+#rightbar-wrapper li a:active,
+#rightbar-wrapper li a:focus {
+   text-decoration: none;
+}
+
+/* #rmenu {
+    margin-top: 100px;
+} */
+
+
