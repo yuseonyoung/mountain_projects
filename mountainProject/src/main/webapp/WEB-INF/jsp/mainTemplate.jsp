@@ -74,4 +74,27 @@
         </div>
     </div>
 </body>
+	<%
+	    String userId = (String) session.getAttribute("userId");
+	    if (userId == null || userId.isEmpty()) {
+	%>
+	    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> <!-- SweetAlert2 라이브러리 불러오기 -->
+	    <script>
+	
+            Swal.fire({
+                title: "로그인을 하지 않았습니다",
+                text: "로그인 페이지로 이동합니다.",
+                icon: "warning",
+                confirmButtonText: "확인",
+                allowOutsideClick: false 
+            }).then(function() {
+            	// 확인 버튼 클릭 시 로그인 페이지로 이동
+                window.location.href = "/login.do"; 
+            });
+	    </script>
+	<%
+	        return; // 리디렉션 후 추가 코드 실행 방지
+	    }
+	%>
+
 </html>

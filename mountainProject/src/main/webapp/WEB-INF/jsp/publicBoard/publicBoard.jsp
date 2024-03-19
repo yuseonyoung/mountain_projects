@@ -21,15 +21,28 @@
 			padding-right : 260px;
 			margin-top : 15px;
 		}
+		.commentDiv{
+			display: flex;
+	    	justify-content: left;
+			margin-left : 403px;
+			margin-right : 403px;
+			margin-top : 15px;
+		}
+		.commentDiv li{
+			list-style-type: none;
+		}
 		
-		#textareaData {
-		    width: 600px; 
+		#textareaData, .commentTextArea{
+		    width: 72%; 
 		    height: 100px; 
 		    background-color: black; 
 		    color: white; 
 		    resize: none; 
 		    border: none; 
 		    outline: none;
+		}
+		.commentTextArea{
+			height: auto; 
 		}
 		.subContainer{
 			display: flex;
@@ -192,7 +205,28 @@
 		    padding-left: 150px;
 		    padding-right: 150px;
 		}
+		.boardImages {
+		    width: 100vh; /* 부모 div의 너비를 100%로 설정 */
+		    height: 100%; /* 부모 div의 높이를 100%로 설정 */
+		    overflow: hidden; /* 이미지가 부모 div를 넘어가는 경우를 처리하기 위해 오버플로우를 숨김으로 설정 */
+		}
 		
+		.boardImages img {
+		    width: 100%; /* 이미지의 너비를 부모 div의 너비에 맞게 설정 */
+		    height: 100%; /* 이미지의 높이를 부모 div의 높이에 맞게 설정 */
+		    object-fit: cover; /* 이미지를 부모 div에 꽉 차게 설정 */
+		}
+		.profileIcon{
+			width: 40px;
+		    height: 40px;
+		    border-radius: 50%
+		}
+		.containerCommentDiv{
+			display : flex;
+		}
+		.containerTextAreea{
+			width:1080px;
+		}
 	</style>
 	<%
 		String selectBoard = (String)request.getAttribute("selectBoard");
@@ -235,11 +269,11 @@
             var scrollHeight = $(this)[0].scrollHeight;
             // 요소의 보이는 화면 높이
             var windowHeight = Math.round($(this).height());
-
-            
-            console.log("scrollHeight",scrollHeight)
+	
+ 			//스크롤 데이터 테스트           
+            /* console.log("scrollHeight",scrollHeight)
             console.log("windowHeight",windowHeight)
-            console.log("scrollTop",scrollTop)  
+            console.log("scrollTop",scrollTop) */  
             
             
             if (scrollTop + windowHeight >= scrollHeight && scrollStatus==true) {
@@ -306,7 +340,8 @@
         }else if(selectBoard =='partial'){
         	boardList = data.PartialBoardList;
         }
-
+    	console.log("전체보드리스트 : ",boardList);
+    	
 		let boardLikeList = data.boardLikeList;
 
 		for (let i = 0; i < boardList.length; i++) {
@@ -316,6 +351,7 @@
             let name = boardItem.userDetail.name;
          	let boardId = boardItem.boardId;
 			let likeQty = boardItem.likeQty;
+			let cmtList = boardItem.commentVOList;		
          	
 			//좋아요 여부
          	let flag= false;
@@ -323,20 +359,20 @@
          	
             // HTML 요소를 생성합니다.
             let appendHtml = `
-                <div id="content">
+            	<div class="containerContents">
+                <div id = "content">
                     <div>
                     	<input type="hidden" class="boardData" value="${boardId}"/>
                         <div class="imageTotalDiv">
                             <div>
                                 <img class = "likeIcon" id="profileImage" src="/files/profile.do" alt="home"><span class="likeText">${name}</span>
                             </div>
-                            <div>
-                                <img src="/files/board/${boardId}/image.do" style="
-                                    width: 100%;
-                                height: 100%; alt="img">
+                            <div class ='boardImages'>
+                                <img src="/files/board/${boardId}/image.do"  
+                                 alt="img">
                             </div>
                             <div class="subContainer">
-                                <div class="likeImage"> `
+                                <div class="likeImage"> `;
                                 
                                 for (let j = 0; j < boardLikeList.length; j++) {
                                 	
@@ -360,8 +396,8 @@
                                 
 	        appendHtml +=     ` </div>
                                 <div style="margin-right: 10px;">
-                                    <a href="javascript:;"><img class="subImage" src="<%=request.getContextPath()%>/images/board/comment.png" alt="comment"></a>
-                                </div >
+                                    <a href="javascript:;" onclick="openComment(this)"><img class="subImage" src="<%=request.getContextPath()%>/images/board/comment.png" alt="comment"></a>
+                                </div>
                                 <div>
                                 	<a href="javascript:;"><img class="subImage" src="<%=request.getContextPath()%>/images/board/share.png" alt="share"></a>
                                 </div>
@@ -369,17 +405,58 @@
                         </div>
                     </div>    
                 </div>
-                <div class="boardContent">
-                    <textarea id="textareaData" style="text-align: left;">${ctnt.trim()}</textarea>
-                </div>
-            `;
+                <div class = "commentDiv" style="display:none;">
+                	<ul>
+                `;
+                	
+                appendHtml += getComment(cmtList);
+                		<%-- <li>
+                			<img class="subImage profile" src="<%=request.getContextPath()%>/images/board/like.png" alt="like">
+                			
+                		</li> --%>
+                	
+                		
+            appendHtml +=   `</ul>
+				                </div>
+				                <div class="boardContent">
+				                    <textarea id="textareaData" style="text-align: left;">${ctnt.trim()}</textarea>
+				                </div>
+			                </div>
+				            `;
             
             // 생성한 HTML을 totalPage에 추가합니다.
             $('#totalPage').append(appendHtml);
         }
     }
 
+	function getComment(commentList){
+		
+		let appendHtmlTag = "";
+		commentList.forEach(function(comment){
+			if(comment.commentWriter){
+				let userInfo = comment.userVO;
+				console.log(userInfo);
+				appendHtmlTag += `
+				    <li>
+						<div class="containerCommentDiv">
+					        <img class="profileIcon" id="contentsProfileImage" src="${userInfo.userId ? '/files/' + userInfo.userId + '/profileImage.do' : ''}" alt="home">
+					        <div>
+					        <span class="likeText">${userInfo.name}</span>    
+					        <span>${comment.currentDate}</span>
+				        	</div>
+				        </div>
+				        <div class="containerTextAreea">
+				            <textarea class="commentTextArea" style="text-align: left;">${comment.contents}</textarea>
+				        </div>
+			    	</li>
+				`;
+			}
 
+		})
+		return appendHtmlTag;
+	}
+	
+	
     let page = 0;
     function getNextPage() {
         // 다음으로 로드할 페이지 번호를 계산하여 반환
@@ -570,7 +647,6 @@
                 	
                 	loadData('public');
                 	if(selectBoard === 'public'){
-                		alert('너가왜나와');
                 		$('#bdbuttonArea').append(btData);
                 	}
                 	
@@ -589,6 +665,25 @@
     	$('#imageRetrieve').empty();
     	
     })
+    
+    function openComment(element) {
+	    var parentElement = $(element).closest('.containerContents');
+	    var commentDiv = parentElement.find('.commentDiv');
+	
+	    // ul 아래의 li 요소를 확인하여 개수를 가져옴
+	    var liCount = commentDiv.find('ul li').length;
+	
+	    if (liCount === 0) {
+	        // li 요소가 없는 경우에만 display: none으로 설정
+	        commentDiv.css('display', 'none');
+	    } else {
+	        // li 요소가 있는 경우에는 정상적으로 토글 처리
+	        commentDiv.toggle();
+	    }
+	}
+
+
+
 </script>
 
         

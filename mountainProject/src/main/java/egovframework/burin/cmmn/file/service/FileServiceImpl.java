@@ -39,13 +39,16 @@ public class FileServiceImpl implements FileService {
 	
 	@Override
 	public ResponseEntity<byte[]> retrieveFile(String fileId) throws IOException {
-	    String fileCode = "";
+		String fileCode = "";
+		log.info("111111111111111111111111111111111111111111111{}",fileId);
 	    // user는 길이 9자리 고정
 	    if (fileId.length() == 9) {
 	        userVO = userDao.userDetail(fileId);
 	        fileCode = userVO.getFileCode();
 	    // board는 9번째 자리에 B가 고유 문자로 들어가있음	
 	    } else if (fileId.charAt(8) == 'B') {
+	    	
+	    	log.info("2222222222222222222222222222222222222222222");
 	        fileCode = boardDao.selectBoardFileCode(fileId);
 	        log.info("fileCode: {}", fileCode);
 	    }

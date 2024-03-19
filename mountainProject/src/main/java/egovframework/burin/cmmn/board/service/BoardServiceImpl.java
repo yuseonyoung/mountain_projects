@@ -12,6 +12,7 @@ import egovframework.burin.cmmn.board.vo.BoardLikeVO;
 import egovframework.burin.cmmn.board.vo.BoardVO;
 import egovframework.burin.cmmn.board.vo.MapVO;
 import egovframework.burin.cmmn.board.vo.MountainInfoVO;
+import egovframework.burin.cmmn.board.vo.RecruitementVO;
 import egovframework.burin.cmmn.board.vo.RecruitmentBoardVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +36,12 @@ public class BoardServiceImpl implements BoardService {
 		int postPage = 10;
 		//페이징된 게시물 
 		int boardPage = postPage * page;
+		log.info("boardPage :{}",boardPage);
+		
+		List<BoardVO> test = boardDao.selectPublicBoardList(boardPage);
+		for(BoardVO vo : test) {
+			log.info("vo데이터 뽑아보자 {}",vo);
+		}
 		
 		return boardDao.selectPublicBoardList(boardPage);
 	}
@@ -167,4 +174,22 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.selectRboardDetail(boardId);
 	}
 
+	@Override
+	public int createRecruitment(RecruitementVO recVO) {
+		return boardDao.insertRecruitment(recVO);
+	}
+
+	@Override
+	public int modifyStatus(String boardId) {
+		// TODO Auto-generated method stub
+		return boardDao.updateStatus(boardId);
+	}
+
+	@Override
+	public int retrieveParticipation(RecruitementVO recVO) {
+		// TODO Auto-generated method stub
+		return boardDao.selectParticipation(recVO);
+	}
+	
+	
 }

@@ -31,4 +31,5 @@ public class RecruitmentBoardVO {
     private int firstIndex;
     private int recordCountPerPage;
     
+    private int recCount;
 }

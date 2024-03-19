@@ -1,5 +1,7 @@
 package egovframework.burin.cmmn.board.vo;
 
+import java.util.List;
+
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 
 import egovframework.burin.cmmn.user.vo.UserVO;
@@ -21,5 +23,6 @@ public class BoardVO {
     
     private int likeQty;
     private UserVO userDetail;
+    private List<CommentVO> commentVOList;
     
 }

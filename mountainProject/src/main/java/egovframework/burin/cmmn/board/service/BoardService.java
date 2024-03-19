@@ -7,6 +7,7 @@ import egovframework.burin.cmmn.board.vo.BoardLikeVO;
 import egovframework.burin.cmmn.board.vo.BoardVO;
 import egovframework.burin.cmmn.board.vo.MapVO;
 import egovframework.burin.cmmn.board.vo.MountainInfoVO;
+import egovframework.burin.cmmn.board.vo.RecruitementVO;
 import egovframework.burin.cmmn.board.vo.RecruitmentBoardVO;
 
 public interface BoardService {
@@ -100,4 +101,29 @@ public interface BoardService {
 	 * @return
 	 */
 	public List<Map<String, Object>> retrieveRboardDetail(String boardId);
+	
+	/**
+	 * 
+	 * 모임 참가하기
+	 * 
+	 * @param recVO
+	 * @return
+	 */
+	public int createRecruitment(RecruitementVO recVO);
+	
+	/**
+	 * 
+	 * 모임 상태 변경
+	 * 
+	 * @return
+	 */
+	public int modifyStatus(String boardId);
+	/**
+	 * 
+	 * 같은 게시물에 중복참여 여부검사
+	 * 
+	 * @param recVO
+	 * @return
+	 */
+	public int retrieveParticipation(RecruitementVO recVO);
 }

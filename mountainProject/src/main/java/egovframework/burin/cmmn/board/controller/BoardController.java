@@ -3,7 +3,6 @@ package egovframework.burin.cmmn.board.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +20,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +36,7 @@ import egovframework.burin.cmmn.board.vo.BoardLikeVO;
 import egovframework.burin.cmmn.board.vo.BoardVO;
 import egovframework.burin.cmmn.board.vo.MapVO;
 import egovframework.burin.cmmn.board.vo.MountainInfoVO;
+import egovframework.burin.cmmn.board.vo.RecruitementVO;
 import egovframework.burin.cmmn.board.vo.RecruitmentBoardVO;
 import egovframework.burin.cmmn.board.vo.TotalBoardVO;
 import egovframework.burin.cmmn.file.service.FileService;
@@ -68,6 +68,8 @@ public class BoardController {
 	BoardLikeVO blVO = new BoardLikeVO();
 	FileVO flVO = new FileVO();
 	RecruitmentBoardVO rBoardVO = new RecruitmentBoardVO();
+	RecruitementVO recVO = new RecruitementVO();
+	
 	
 	@Value("${boardFilePath}")
 	private String boardFilePath;
@@ -108,6 +110,9 @@ public class BoardController {
 		//user가 좋아요를 누른 board의 목록 조회
 		List<BoardLikeVO> boardLikeList = service.retrieveBoardLikeUserCount(blVO);
 		
+		log.info("@@@@@@@@@@@@@@@@@@@@@ : {}",list.size());
+		log.info("@@@@@@@@@@@@@@@@@@@@@page : {}",page);
+		
 		model.addAttribute("PublicBoardList", list);
 		model.addAttribute("boardLikeList", boardLikeList);
 		
@@ -128,7 +133,7 @@ public class BoardController {
 		//session에서 user_id를 가져옴
 		String userId = (String)session.getAttribute("userId");
 		blVO.setUserId(userId);
-		
+		log.info(" ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ");
 		//10개씩 자료 boardList조회
 		List<BoardVO> list = service.retrievePartialBoardList(page);
 		//user가 좋아요를 누른 board의 목록 조회
@@ -282,11 +287,31 @@ public class BoardController {
 		paginationInfo.setTotalRecordCount(totalCount);
 		
 		List<RecruitmentBoardVO> RBoardList =service.retrieveRecruitmentBoardList(rBoardVO);
+		int recCount = 0;
+		int recQty = 0;
+		int cnt =0;
+		int result = 0;
 		for(RecruitmentBoardVO list : RBoardList) {
 			BoardVO vo = list.getBoardVO();
 			log.info("{}",vo);
+			log.info("야ㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑ{}",list);
 			log.info("{}",vo.getCdate());
+			recCount = list.getRecCount();
+			recQty = list.getRecQty();
+			result = recQty - recCount;
 			
+			log.info("skdhkdkdhdkhdkdhkdhk{}",result);
+			if(result == 0 ) {
+				if(list.getDeadlineStatus().equals("N")) {
+					cnt = service.modifyStatus(list.getBoardId());
+					if(cnt>0) {
+						log.info("업데이트 됏니?????????????????????");
+						model.addAttribute("updateSuccess", "updateSuccess");
+					}else {
+						model.addAttribute("updateFail", "updateFail");
+					}
+				}
+			}
 		}
 		model.addAttribute("RBoardList", RBoardList);
 		model.addAttribute("paginationInfo", paginationInfo);
@@ -396,17 +421,47 @@ public class BoardController {
 	
 	@GetMapping("{boardId}/rBoardDetail.do")
 	public String rBoardDetail(@PathVariable String boardId, Model model) {
-		boardId = boardId.replace("NaN", "");
-		log.info("boardId : {}",boardId);
-		
-		List<Map<String,Object>> rBoardDetail = service.retrieveRboardDetail(boardId);
-		if(rBoardDetail.size()>0){
+			boardId = boardId.replace("NaN", "");
+			log.info("boardId : {}",boardId);
 			
-			model.addAttribute("rBoardDetail", rBoardDetail);
-		}else {
-			model.addAttribute("fail", "fail");
+			List<Map<String,Object>> rBoardDetail = service.retrieveRboardDetail(boardId);
+			if(rBoardDetail.size()>0){
+				
+				model.addAttribute("rBoardDetail", rBoardDetail);
+			}else {
+				model.addAttribute("fail", "fail");
+			}
+			
+			return "jsonView";
 		}
+
+	@PostMapping("/recruitment.do")
+	public String recruitment(@RequestParam String boardId,Model model, HttpSession session){
 		
+		String userId = (String)session.getAttribute("userId");
+		
+		recVO.setBoardId(boardId);
+		recVO.setUserId(userId);
+		
+		log.info("recririruriur: {}",boardId);
+		log.info("recririruriur: {}",userId);
+		
+		int result = service.retrieveParticipation(recVO);
+		if(result<=0) {
+			int cnt = service.createRecruitment(recVO);
+			
+			if(cnt>0) {
+				log.info("너냐1");
+				model.addAttribute("success", "success");
+			}else {
+				log.info("너냐2");
+				model.addAttribute("fali", "fali");
+			}
+		}else {
+			model.addAttribute("duplicated", "duplicated");
+		}
 		return "jsonView";
 	}
+	
 }
+

@@ -11,13 +11,16 @@
 	<resultMap type="egovframework.burin.cmmn.board.vo.BoardVO" id="publicBoardMap" autoMapping="true">
 			<id property="boardId" column="BOARD_ID"/>
 			<association property="userDetail" javaType="UserVO" autoMapping="true"/>
+			<collection property="commentVOList" ofType="egovframework.burin.cmmn.board.vo.CommentVO" autoMapping="true">
+				<association property="userVO" javaType="UserVO" autoMapping="true"/>
+			</collection>
 	</resultMap>
 	
 	<select id="selectPublicBoardList" parameterType="int" resultMap="publicBoardMap">
-		
-		SELECT *,
-		    (SELECT COUNT(*) FROM boardlike WHERE board_id = c.board_id) as likeQty
-		FROM (
+		select 
+			*
+		FROM
+		(
 		    SELECT 
 		        a.board_id, 
 		        a.ctnt, 
@@ -26,31 +29,32 @@
 		        a.scope,
 		        a.b_division,
 		        a.user_id,
-		        b.name
+		        b.name,
+		        (SELECT COUNT(*) FROM boardlike WHERE board_id = a.board_id) as likeQty
 		    FROM 
 		        board a
 		    JOIN 
 		        "USER" b ON a.user_id = b.user_id
 		    WHERE
-		    	1=1
-		    	 and b_division = 'BD'
-				 and scope = 'PUBLIC'     
+		        1=1
+		        AND a.b_division = 'BD'
+		        AND a.scope = 'PUBLIC'
 		    ORDER BY 
-		        TO_DATE(LEFT(board_id, 8), 'YYYYMMDD') DESC, 
-		        CAST(RIGHT(board_id, 5) AS INTEGER) DESC 
+		        TO_DATE(LEFT(a.board_id, 8), 'YYYYMMDD') DESC, 
+		        CAST(RIGHT(a.board_id, 5) AS INTEGER) DESC 
 		    OFFSET #{page} ROWS
 		    LIMIT 10
-		) AS c
+		) F left outer join "comment" g on f.board_id = g.board_id
 		ORDER BY 
-		    board_id DESC
+	        TO_DATE(LEFT(f.board_id, 8), 'YYYYMMDD') DESC, 
+	        CAST(RIGHT(f.board_id, 5) AS INTEGER) DESC 
 	</select>
 	
-	
 	<select id="selectPartialBoardList" parameterType="int" resultMap="publicBoardMap">
-		
-		SELECT *,
-		    (SELECT COUNT(*) FROM boardlike WHERE board_id = c.board_id) as likeQty
-		FROM (
+		select 
+			*
+		FROM
+		(
 		    SELECT 
 		        a.board_id, 
 		        a.ctnt, 
@@ -59,23 +63,25 @@
 		        a.scope,
 		        a.b_division,
 		        a.user_id,
-		        b.name
+		        b.name,
+		        (SELECT COUNT(*) FROM boardlike WHERE board_id = a.board_id) as likeQty
 		    FROM 
 		        board a
 		    JOIN 
 		        "USER" b ON a.user_id = b.user_id
 		    WHERE
-		    	1=1
-		    	 and b_division = 'BD'
-				 and scope = 'PARTIAL'     
+		        1=1
+		        AND a.b_division = 'BD'
+		        AND a.scope = 'PARTIAL'
 		    ORDER BY 
-		        TO_DATE(LEFT(board_id, 8), 'YYYYMMDD') DESC, 
-		        CAST(RIGHT(board_id, 5) AS INTEGER) DESC 
+		        TO_DATE(LEFT(a.board_id, 8), 'YYYYMMDD') DESC, 
+		        CAST(RIGHT(a.board_id, 5) AS INTEGER) DESC 
 		    OFFSET #{page} ROWS
 		    LIMIT 10
-		) AS c
+		) F left outer join "comment" g on f.board_id = g.board_id
 		ORDER BY 
-		    board_id DESC
+	        TO_DATE(LEFT(f.board_id, 8), 'YYYYMMDD') DESC, 
+	        CAST(RIGHT(f.board_id, 5) AS INTEGER) DESC 
 	</select>
 	
 	<insert id="insertBoardLike" parameterType="egovframework.burin.cmmn.board.vo.BoardLikeVO">
@@ -144,40 +150,46 @@
 	
 	<!-- 페이징 적용한 rBoardList 조회 -->
 	<select id="selectRecruitmentBoardList" resultMap="RBoardMap">
-		
-		SELECT *
+		SELECT 
+			e.*, COUNT(r.board_id) AS rec_count
 		FROM (
-		    SELECT
-		        ROW_NUMBER() OVER (ORDER BY board_id DESC) AS rNum,
-		        board_id,
-		        ctnt,
-		        file_code,
-		        b_division,
-		        inqire_qty,
-		        rec_qty,
-		        mntn_nm,
-		        board_title,
-		        participation_pee,
-		        deadline_status,
-		        cdate
+		    SELECT *
 		    FROM (
-		        SELECT a.board_id,
-		               a.ctnt,
-		               a.file_code,
-		               a.b_division,
-		               b.inqire_qty,
-		               b.rec_qty,
-		               b.mntn_nm,
-		               b.board_title,
-		               b.participation_pee,
-		               b.deadline_status,
-		               a.cdate
-		        FROM board a
-		        INNER JOIN r_board b ON a.board_id = b.board_id
-		    ) AS subquery
-		) AS subquery2
-		ORDER BY board_id DESC
-		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+		        SELECT
+		            ROW_NUMBER() OVER (ORDER BY board_id DESC) AS rNum,
+		            board_id,
+		            ctnt,
+		            file_code,
+		            b_division,
+		            inqire_qty,
+		            rec_qty,
+		            mntn_nm,
+		            board_title,
+		            participation_pee,
+		            deadline_status,
+		            cdate
+		        FROM (
+		            SELECT a.board_id,
+		                   a.ctnt,
+		                   a.file_code,
+		                   a.b_division,
+		                   b.inqire_qty,
+		                   b.rec_qty,
+		                   b.mntn_nm,
+		                   b.board_title,
+		                   b.participation_pee,
+		                   b.deadline_status,
+		                   a.cdate
+		            FROM board a
+		            INNER JOIN r_board b ON a.board_id = b.board_id
+		        ) AS subquery
+		    ) AS d
+		    ORDER BY d.board_id DESC
+		    LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+		) AS e
+		LEFT OUTER JOIN recruitment r ON e.board_id = r.board_id
+		GROUP BY e.board_id,e.rNum, e.ctnt, e.file_code, e.b_division, e.inqire_qty, e.rec_qty, e.mntn_nm, e.board_title, e.participation_pee, e.deadline_status, e.cdate
+		order by e.rnum
 	</select>
 	
 	<select id="selectMapData" resultType="egovframework.burin.cmmn.board.vo.MapVO">
@@ -220,13 +232,49 @@
 	</insert>
 	
 	<select id="selectRboardDetail" parameterType="String" resultType="java.util.HashMap">
-		select 
-			a.board_id "boardId" ,a.file_code "fileCode",a.user_id "userId", a.cdate "cdate",a.ctnt "ctnt",b.mntn_nm "mntnNm",b.participation_pee "participationPee",b.board_title "boardTitle",b.rec_qty "recQty"  
-		from 
-			board a , r_board b
-		where 1=1
-			and a.board_id  = b.board_id 
-			and b.board_id = #{boardId}
+		SELECT 
+		    a.board_id "boardId",
+		    a.file_code "fileCode",
+		    a.user_id "userId",
+		    a.cdate "cdate",
+		    a.ctnt "ctnt",
+		    b.mntn_nm "mntnNm",
+		    b.participation_pee "participationPee",
+		    b.board_title "boardTitle",
+		    b.rec_qty "recQty",
+		    COUNT(r.*) AS "recCount"
+		FROM 
+		    board a
+		    INNER JOIN r_board b ON a.board_id = b.board_id
+		    LEFT OUTER JOIN recruitment r ON b.board_id = r.board_id
+		WHERE 
+		    a.board_id = #{boardId}
+		GROUP BY 
+		   a.board_id, a.file_code, a.user_id, a.cdate, a.ctnt, b.mntn_nm, b.participation_pee, b.board_title, b.rec_qty
+	
 	</select>
+	
+	<insert id="insertRecruitment" parameterType="egovframework.burin.cmmn.board.vo.RecruitementVO">
+		INSERT INTO recruitment(board_id, user_id)
+		VALUES(#{boardId}, #{userId})
+	</insert>
+	
+	<update id="updateStatus" parameterType="String">
+		UPDATE r_board
+		SET deadline_status='Y'
+		WHERE board_id=#{boardId}
+	</update>
+	
+	<select id="selectParticipation" parameterType="egovframework.burin.cmmn.board.vo.RecruitementVO" resultType="int">
+		select 
+			count(*)
+		from 
+			recruitment
+		where 
+			1=1 
+			and board_id = #{boardId}
+			and user_id = #{userId}
+					
+	</select> 
 	
 </mapper>

@@ -27,7 +27,12 @@ public class FileController {
     public ResponseEntity<byte[]> getProfile(@SessionAttribute("userId") String userId) {
         return getImage(userId);
     }
-
+    @GetMapping("{userId}/profileImage.do")
+    public ResponseEntity<byte[]> getProfileImage(@PathVariable String userId) {
+    	log.info("야야ㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑ:{}",userId);
+    	return getImage(userId);
+    }
+    
     @GetMapping("board/{boardId}/image.do")
     public ResponseEntity<byte[]> getBoardImage(@PathVariable String boardId) {
         return getImage(boardId);

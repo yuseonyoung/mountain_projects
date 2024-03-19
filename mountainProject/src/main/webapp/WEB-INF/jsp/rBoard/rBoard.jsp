@@ -5,10 +5,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/rBoard.css">
-	<!-- 
-		jsptag를 궅이 사용한이유는 elignore 설정떄문에 eltag를 사용할수없음 
-		한번만 사용할것이기 때문에 사용
-	 -->
+
 	<%
 		String selectBoard = (String)request.getAttribute("selectBoard");
 	%>
@@ -118,11 +115,13 @@
 				<div id='rBoardFormDiv'>
 					<div id="rBoardLineView">
 						<div id="titleBoxView">
+							<input id="hiddenBoardId" type="hidden"/>
 							<input id="titleInput" type="text" readonly/>
 						</div>
 						<div id="flexBoxData">
+							<label style="width:10%;">산 명 : </label>
 							<div class="inputBoxClass">
-							<input type="text" id="mntnNmInput" readonly>
+								<input type="text" id="mntnNmInput" readonly>
 							</div>
 						</div>
 						<div id="dateBox">
@@ -134,9 +133,13 @@
 								<label>참여금액 :  </label>
 								<input id="peeInputData"  readonly>
 							</div>
-							<div id="p_people">
+							<div id="p_peopleDetail" style="margin-left : 10px;">
 								<label>참여인원 :  </label>
 								<input id="participationInputData" readonly  >
+							</div>
+							<div id="p_recruitment" style="margin-left : 10px;">
+								<label>모집된 인원 :  </label>
+								<input id="recruitmentInputData" readonly  >
 							</div>
 						</div>
 					
@@ -150,6 +153,7 @@
 								<textarea id="contentText" readonly></textarea>
 							</div>
 						</div>
+						<button id="participateBtn" class="custom-btn btn-1" type="button"><span>신청하기</span></button>
 						<button id="returnBtn" class="custom-btn btn-2" type="button"><span>돌아가기</span></button>
 					</div>
 				</div>
@@ -234,8 +238,8 @@
         
     });
     
+    var flagData = false;
     var map; // 전역 변수로 map을 선언합니다.
-
     function showMap() {
         // 이미 map 객체가 있으면 함수를 종료합니다.
         if (map) {
@@ -265,7 +269,7 @@
                     '?service=WFS&' +
                     'version=1.1.0&' +
                     'request=GetFeature&' +
-                    'typepath=mountain:boundaryMap_4326&' +  // WFS 레이어 이름
+                    'typeName=mountain:boundaryMap_4326&' +  // WFS 레이어 이름
                     'outputFormat=application/json&' +
                     'srspath=EPSG:3857&' +
                     'bbox=' + extent.join(',') + ',EPSG:3857';
@@ -297,7 +301,7 @@
                     color: 'rgba(255, 255, 0, 0.5)' // 노란색 피처
                 }),
                 text: new ol.style.Text({
-                    text: feature.get('path'), // 라벨 템플릿: 속성 'path' 값으로 라벨 표시
+                    text: feature.get('NAME'), // 라벨 템플릿: 속성 'path' 값으로 라벨 표시
                     font: '12px Arial',
                     fill: new ol.style.Fill({
                         color: 'black'
@@ -341,7 +345,7 @@
                             color: 'red' // 빨간색으로 변경
                         }),
                         text: new ol.style.Text({
-                            text: feature.get('path'),
+                            text: feature.get('NAME'),
                             font: '12px Arial',
                             fill: new ol.style.Fill({
                                 color: 'black'
@@ -349,7 +353,7 @@
                         })
                     }));
                     
-                    let path = feature.get('path');
+                    let path = feature.get('NAME');
                     $.ajax({
                         url: '<%=request.getContextPath()%>/board/' + path + '/searchArea.do',
                         method: 'GET',
@@ -451,7 +455,7 @@
         var serviceKey = 'Ed/35mELOivS5oYydxyKhiKHx7lQFpvLvJ2Qc6M8Tu+YtAVJ7rZ0stzA1lG6sHs8aFq01IC8x0ZcnRg26Rj5zw==';
         var pageNo = 1;
         var numOfRows = 100;
-
+		
         // AJAX 요청
         $.ajax({
             url: apiUrl,
@@ -772,13 +776,34 @@
  		        let userId = rBoardDetail[0].userId;
  		        let fileCode = rBoardDetail[0].fileCode;
  		        let recQty = parseInt(rBoardDetail[0].recQty);
+ 		        
  		        let participationPee = parseInt(rBoardDetail[0].participationPee);
  		        let cdate = new Date(rBoardDetail[0].cdate);
  		        let formattedCdate = cdate.toISOString().split('T')[0];
+ 		        
+ 		        let recCount = rBoardDetail[0].recCount;
  		        console.log(formattedCdate);
  		        console.log(participationPee);
- 		        console.log(recQty);
+ 		        console.log("1",recQty);
  		        console.log(ctnt);
+ 		        console.log(ctnt);
+ 		        console.log("2",recCount);
+ 		        
+ 		        let caculate = recQty - recCount;
+ 		        console.log("3",caculate);
+ 		        
+ 		        	
+ 		        // 조건에 따라 버튼의 래스를 변경하여 배경색을 제어합니다.
+	        	if (caculate <= 0) {
+	        	    $('#participateBtn').addClass('btn-disabled');
+	        	} else {
+	        		//마감여부 Y로변경
+	        	    $('#participateBtn').removeClass('btn-disabled');
+	        	}
+
+ 		        
+ 		        //boardId
+ 		        $('#hiddenBoardId').val(boardId);
  		        //제목
  		        $('#titleInput').val(boardTitle);
  		        //산 이름
@@ -793,10 +818,13 @@
  		        $('#rBoardImage').attr('src','<%=request.getContextPath()%>/files/board/'+boardId+'/image.do');
  		    	//참여일자
  		        $('#cdateInput').val(formattedCdate);
+ 		    	
+ 		    	$('#recruitmentInputData').val(recCount);
  		    }
  		}); 
     	
     }
+    
     
     $('#createForm').on('click',function(){
     	$('#listForm').css('display','none');
@@ -811,6 +839,52 @@
     $('#returnBtn').on('click',function(){
     	$('#rboardDetailView').css('display','none');
     	$('#listForm').css('display','block');
+    })
+    
+    $('#participateBtn').on('click',function(){
+    	Swal.fire({
+    	    title: '참가신청',
+    	    text: '참가신청을 하시겠습니까?',
+    	    icon: 'question',
+    	    showCancelButton: true,
+    	    confirmButtonColor: '#3085d6',
+    	    cancelButtonColor: '#d33',
+    	    confirmButtonText: '확인'
+    	}).then((result) => {
+    	    if (result.isConfirmed) {
+    	        // 확인 버튼이 클릭되었을 때의 동작
+    	        let boardId = $('#hiddenBoardId').val();
+    	        
+    	        $.ajax({
+    			    url: '<%=request.getContextPath()%>/board/recruitment.do',
+    			    method: 'POST',
+    			    data:{
+    			    	"boardId" : boardId
+    			    },
+    			    success: function(res) {
+    			    	if(res.success){
+			    	        Swal.fire('완료!', '참가가 완료되었습니다.', 'success').then((result) => {
+			    	            if (result.isConfirmed) {
+			    	                window.location.href = '/board/rBoardList.do';
+			    	            }
+			    	        });
+    			    	}else if(res.duplicated){
+    			    		Swal.fire({
+    							title: "경고!",
+    							text: "이미 참여한 모임입니다.",
+    							icon: "warning",
+    							showCancelButton: true,
+    							confirmButtonColor: "#3085d6",
+    							cancelButtonColor: "#d33",
+    							confirmButtonText: "확인"
+    						})
+    			    	}
+    			    }
+    			}); 
+
+    	    }
+    	});
+
     })
     
     
