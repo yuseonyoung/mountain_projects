@@ -126,4 +126,20 @@ public interface BoardService {
 	 * @return
 	 */
 	public int retrieveParticipation(RecruitementVO recVO);
+	/**
+	 * 
+	 * 게시물 수정
+	 * 
+	 * @param boardVO
+	 * @param rBoardVO
+	 * @return
+	 */
+	public int modifyRBoard(BoardVO boardVO, RecruitmentBoardVO rBoardVO);
+	/**
+	 * boardId를 통해 filecode를 조회
+	 * 
+	 * @param boardId
+	 * @return
+	 */
+	public String retrieveBoardFileCode(String boardId);
 }

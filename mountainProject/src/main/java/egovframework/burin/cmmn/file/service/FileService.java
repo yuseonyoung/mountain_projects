@@ -39,4 +39,5 @@ public interface FileService {
 	public String uploadFile(MultipartFile fileData, String boardFilePath) throws IOException;
 
 	public String retrieveRecentFile(String savaNm);
+	
 }

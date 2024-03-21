@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,6 +63,10 @@ public class BoardController {
 	@ModelAttribute("totBoard")
 	public TotalBoardVO totalBoardVO() {
 		  return new TotalBoardVO();
+	} 
+	@ModelAttribute("updateBoard")
+	public TotalBoardVO updateBoardVO() {
+		return new TotalBoardVO();
 	} 
 	
 	BoardVO boardVO = new BoardVO();
@@ -291,6 +296,7 @@ public class BoardController {
 		int recQty = 0;
 		int cnt =0;
 		int result = 0;
+		log.info("RBoardList:{}",RBoardList);
 		for(RecruitmentBoardVO list : RBoardList) {
 			BoardVO vo = list.getBoardVO();
 			log.info("{}",vo);
@@ -372,6 +378,8 @@ public class BoardController {
 	                //산이름
 	                rBoardVO.setMntnNm(totalBoardVO.getMntnNm());
 	                
+	                
+	                
 	                //모집날짜
 	                boardVO.setCdate(totalBoardVO.getCdate());
 	                //내용
@@ -380,7 +388,6 @@ public class BoardController {
 	                boardVO.setUserId(userId);
 	                //파일코드
 	                boardVO.setFileCode(fileCode);
-	                
 	                log.info("fileCode : {}",fileCode);
 	                log.info("boardVO : {}",boardVO);
 	                log.info("rBoardVO : {}",rBoardVO);
@@ -459,6 +466,68 @@ public class BoardController {
 			}
 		}else {
 			model.addAttribute("duplicated", "duplicated");
+		}
+		return "jsonView";
+	}
+	
+	@RequestMapping(value = "/rBoardUpdate.do", method = RequestMethod.POST)
+	public String updateBoard(@ModelAttribute("updateBoard") TotalBoardVO totalBoardVO, Model model, HttpSession session){
+		
+		log.info("totalBoardVO : {},",totalBoardVO);
+		
+		try {
+			MultipartFile fileData = totalBoardVO.getFileCode();
+			String result ="";
+			String fileCode ="";
+			
+			if (fileData != null && !fileData.isEmpty() && fileData.getSize() > 0) {
+				result = fileService.uploadFile(fileData, boardFilePath);
+			}
+			
+		
+		    if(StringUtils.isNotEmpty(result)){
+		    	fileCode = fileService.retrieveRecentFile(result);
+		    }else {
+		    	fileCode = service.retrieveBoardFileCode(totalBoardVO.getBoardId());
+		    }     
+		    
+            String userId = (String)session.getAttribute("userId");
+            
+            //제목
+            rBoardVO.setBoardTitle(totalBoardVO.getBoardTitle());
+            //참여인원
+            rBoardVO.setRecQty(totalBoardVO.getRecQty());
+            //참여금액
+            rBoardVO.setParticipationPee(totalBoardVO.getParticipationPee());
+            //산이름
+            rBoardVO.setMntnNm(totalBoardVO.getMntnNm());
+
+            rBoardVO.setBoardId(totalBoardVO.getBoardId());
+            //boardId
+            boardVO.setBoardId(totalBoardVO.getBoardId());
+            
+            //모집날짜
+            boardVO.setCdate(totalBoardVO.getCdate());
+            //내용
+            boardVO.setCtnt(totalBoardVO.getCtnt());
+            //작성자
+            boardVO.setUserId(userId);
+            //파일코드
+            boardVO.setFileCode(fileCode);
+
+            int cnt = service.modifyRBoard(boardVO, rBoardVO);
+            
+            if(cnt>0) {
+                model.addAttribute("success", "success");
+            }else {
+                model.addAttribute("fail", "fail");
+            }
+			  
+	                
+	                
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return "jsonView";
 	}

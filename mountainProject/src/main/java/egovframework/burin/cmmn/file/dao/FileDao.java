@@ -12,4 +12,5 @@ public interface FileDao {
 	public int insertFile(FileVO flVO);
 
 	public String selectRecnetFileCode(String saveNm);
+	
 }

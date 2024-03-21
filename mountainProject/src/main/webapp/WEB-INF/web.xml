@@ -26,6 +26,7 @@
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
 	
+
     <!-- springsecurity -->
     <!-- <filter>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -36,6 +37,14 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping> -->	
+    <filter>
+	    <filter-name>httpPutFormContentFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>httpPutFormContentFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -60,6 +69,8 @@
 		<servlet-name>action</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
+    <!-- putMapping 사용할수있게 필터검 -->
+	    
     
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

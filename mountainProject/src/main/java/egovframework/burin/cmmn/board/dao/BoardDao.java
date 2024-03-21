@@ -29,7 +29,7 @@ public interface BoardDao {
 
 	public List<BoardLikeVO> selectBoardLikeUserCount(BoardLikeVO blVO);
 	
-	public String selectBoardFileCode(String fileCode);
+	public String selectBoardFileCode(String boardId);
 	
 	public int insertPublicBoard(BoardVO boardVO);
 
@@ -53,5 +53,7 @@ public interface BoardDao {
 	
 	public int selectParticipation(RecruitementVO recVO);
 
+	public int updateBoard(BoardVO boardVO);
 	
+	public int updateRecruitementBoard(RecruitmentBoardVO rBoardVO);
 }

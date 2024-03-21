@@ -190,6 +190,27 @@ public class BoardServiceImpl implements BoardService {
 		// TODO Auto-generated method stub
 		return boardDao.selectParticipation(recVO);
 	}
-	
-	
+
+	@Override
+	public int modifyRBoard(BoardVO boardVO, RecruitmentBoardVO rBoardVO) {
+		// TODO Auto-generated method stub
+		
+		log.info("여긴오니1");	
+		try {
+			int cnt = boardDao.updateBoard(boardVO);
+			if(cnt>0) {
+				return boardDao.updateRecruitementBoard(rBoardVO);
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+
+	@Override
+	public String retrieveBoardFileCode(String boardId) {
+		return boardDao.selectBoardFileCode(boardId);
+	}
 }

@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 
+import egovframework.burin.cmmn.user.vo.UserVO;
 import lombok.Data;
 
 @Data
@@ -32,4 +33,5 @@ public class RecruitmentBoardVO {
     private int recordCountPerPage;
     
     private int recCount;
+    private UserVO userDetail;
 }

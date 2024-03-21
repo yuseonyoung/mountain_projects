@@ -24,7 +24,7 @@
     height:70px;
 }
 #rBoardTable{
-	width:800px;
+	width:1000px;
 }
 .rnumTd{
 	text-align: center; 
@@ -74,20 +74,20 @@ a {
     text-decoration-line: none;
 }
 
-#rBoardFormDiv{
+#rBoardFormDiv, #u_rBoardFormDiv{
 	width: 80%;
     height: 100%;
     background-color: #222;
 }
 
-#rBoardLineDiv{
+#rBoardLineDiv,#u_rBoardLineDiv{
 	padding : 25px;
 }
 #rBoardLineView{
 	padding : 25px;
 }
 
-#titleBox{
+#titleBox,#u_titleBox{
      border: 2px solid white; /* 테두리 스타일 및 색상 설정 */
      padding: 10px; /* 안쪽 여백 설정 */
 }
@@ -114,7 +114,7 @@ a {
      border: none;
      cursor: pointer;
  }
-#flexBox{
+#flexBox , #u_flexBox{
 	display: flex;	
 	margin-top : 2%;
 }
@@ -122,7 +122,7 @@ a {
 	display: flex;	
 	margin-top : 2%;
 }
-.inputBox{
+.inputBox, .u_inputBox{
 	border: 2px solid white;
     width: 100%;
     text-align: center; 
@@ -134,18 +134,18 @@ a {
     height: 97%;
     text-align: center; 
 }
-.searchBox{
+.searchBox, .u_searchBox{
 	border: 2px solid white;
 }
 
-#dataBox{
+#dataBox, #u_dataBox{
 	display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
     margin-top : 10px;
 }
 
-#dateBox{
+#dateBox , #u_dateBox{
 	display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;	
@@ -153,7 +153,7 @@ a {
     
 }
 
-#dateInput {
+#dateInput,#u_dateInput {
   background-color: #222;
   color: white;
   border: 1px solid white; /* 테두리 색상 및 두께 */
@@ -177,7 +177,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(100%);
 }
 
-#contentsLine{
+#contentsLine,#u_contentsLine{
     border: 1px solid white;
     height: 75vh;
     margin-top: 10px;
@@ -188,7 +188,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     margin-top: 10px;
 }
 
-#subDataBox{
+#subDataBox,#u_subDataBox{
 	display: flex;
     justify-content: flex-end;
     margin-top : 2%;
@@ -206,6 +206,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border: 1px solid white;
     text-align: center;
 }
+
+#u_subDataBox input{
+	background-color: #222;
+    color: white; 
+    border: 1px solid white;
+    text-align: center;
+}
+
 #subDataBoxDiv input{
 	background-color: #222;
     color: white; 
@@ -214,10 +222,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 
-#ctntImageDIv {
+#ctntImageDIv,#u_ctntImageDIv {
 	margin: 20px;
     border: 1px solid;
     height: 55vh;
+}
+#u_ctntImageDIv{
+	margin-bottom : 1px;
+}
+
+#u_fileInput{
+	margin-left : 3%;
 }
 
 #contentImageDIv{
@@ -226,7 +241,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     height: 55vh;	
 }
 
-#ctntDiv{
+#ctntDiv ,#u_ctntDiv{
     height: 12vh;
     margin-left : 20px;
     margin-right : 20px;
@@ -239,7 +254,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     margin-right : 20px;
     margin-bottom : 20px;
 }
-#ctntText{
+#ctntText,#u_ctntText{
 	background-color: #222;
     color: white; 
     width: 99.3%;
@@ -253,7 +268,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     height: 93%;
 }
 
-#titleText {
+#titleText, #u_titleText{
     background-color: #222;
     color: white; 
     width: 100%;
@@ -278,7 +293,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: white; /* 포커스 시에도 텍스트 색상 유지 */
 }
 
-.fileConfirm {
+.fileConfirm, .u_fileConfirm {
   height: 100%;
   border: 1px solid #989898;
   text-align: center;
@@ -304,7 +319,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-radius : 50%;
 }
 
-#cancleData{
+#cancleData, #u_cancleData{
 	float:right;
 	margin-bottom:10px;
 }
@@ -353,7 +368,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   transition: all .5s ease;
 }
 
-#p_people{
+#p_people, #u_p_people{
 	margin-left :10px;
 	display: flex;
     flex-direction: column;
@@ -571,7 +586,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
      color: white;
      border: none;
 }
-#rBoardForm{
+#rBoardForm, #u_rBoardForm{
 	width:100%;	
 }
 
@@ -580,7 +595,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin : 10px;
 }
 
-#formView{
+#formView ,#updateForm{
 	display: flex;
     justify-content: center;
     padding-left: 230px;

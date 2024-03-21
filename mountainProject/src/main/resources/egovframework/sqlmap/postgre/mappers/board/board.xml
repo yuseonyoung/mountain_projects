@@ -6,6 +6,7 @@
 	<resultMap type="egovframework.burin.cmmn.board.vo.RecruitmentBoardVO" id="RBoardMap" autoMapping="true">
 			<id property="boardId" column="BOARD_ID"/>
 			<association property="boardVO" javaType="egovframework.burin.cmmn.board.vo.BoardVO" autoMapping="true"/>
+			<association property="userDetail" javaType="UserVO" autoMapping="true"/>
 	</resultMap>
 	
 	<resultMap type="egovframework.burin.cmmn.board.vo.BoardVO" id="publicBoardMap" autoMapping="true">
@@ -124,7 +125,7 @@
 	   	from
 	   		board
 	   	where
-	   		board_id = #{fileCode}
+	   		board_id = #{boardId}
 	</select>
 	
 	<insert id="insertPublicBoard" parameterType="egovframework.burin.cmmn.board.vo.BoardVO">
@@ -149,47 +150,35 @@
 	</select>
 	
 	<!-- 페이징 적용한 rBoardList 조회 -->
-	<select id="selectRecruitmentBoardList" resultMap="RBoardMap">
-		SELECT 
-			e.*, COUNT(r.board_id) AS rec_count
-		FROM (
-		    SELECT *
-		    FROM (
-		        SELECT
-		            ROW_NUMBER() OVER (ORDER BY board_id DESC) AS rNum,
-		            board_id,
-		            ctnt,
-		            file_code,
-		            b_division,
-		            inqire_qty,
-		            rec_qty,
-		            mntn_nm,
-		            board_title,
-		            participation_pee,
-		            deadline_status,
-		            cdate
-		        FROM (
-		            SELECT a.board_id,
-		                   a.ctnt,
-		                   a.file_code,
-		                   a.b_division,
-		                   b.inqire_qty,
-		                   b.rec_qty,
-		                   b.mntn_nm,
-		                   b.board_title,
-		                   b.participation_pee,
-		                   b.deadline_status,
-		                   a.cdate
-		            FROM board a
-		            INNER JOIN r_board b ON a.board_id = b.board_id
-		        ) AS subquery
-		    ) AS d
-		    ORDER BY d.board_id DESC
-		    LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
-		) AS e
-		LEFT OUTER JOIN recruitment r ON e.board_id = r.board_id
-		GROUP BY e.board_id,e.rNum, e.ctnt, e.file_code, e.b_division, e.inqire_qty, e.rec_qty, e.mntn_nm, e.board_title, e.participation_pee, e.deadline_status, e.cdate
-		order by e.rnum
+	<select id="selectRecruitmentBoardList" resultMap="RBoardMap" parameterType="egovframework.burin.cmmn.board.vo.RecruitmentBoardVO">
+		
+		SELECT e.*, COUNT(r.board_id) AS rec_count
+			FROM (
+			    SELECT
+			        ROW_NUMBER() OVER (ORDER BY b.board_id DESC) AS rNum,
+			        a.board_id,
+			        a.ctnt,
+			        a.file_code,
+			        a.b_division,
+			        b.inqire_qty,
+			        b.rec_qty,
+			        b.mntn_nm,
+			        b.board_title,
+			        b.participation_pee,
+			        b.deadline_status,
+			        a.cdate,
+			        a.user_id,
+			        u.name
+			    FROM board a
+			    INNER JOIN r_board b ON a.board_id = b.board_id
+			    inner join "USER" u on a.user_id = u.user_id
+			    ORDER BY b.board_id DESC
+			    LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+			) AS e
+			LEFT OUTER JOIN recruitment r ON e.board_id = r.board_id
+			GROUP BY e.board_id, e.rNum, e.ctnt, e.file_code, e.name, e.user_id,e.b_division, 
+			e.inqire_qty, e.rec_qty, e.mntn_nm, e.board_title, e.participation_pee, e.deadline_status, e.cdate
+			ORDER BY e.board_id DESC
 	</select>
 	
 	<select id="selectMapData" resultType="egovframework.burin.cmmn.board.vo.MapVO">
@@ -276,5 +265,25 @@
 			and user_id = #{userId}
 					
 	</select> 
+	
+	<update id="updateBoard" parameterType="egovframework.burin.cmmn.board.vo.BoardVO">
+	    UPDATE 
+	    	board
+		SET 
+			ctnt=#{ctnt}, cdate=CAST(#{cdate} AS DATE), file_code= #{fileCode}, "scope"='PUBLIC'
+			, b_division='RBD', user_id=#{userId}
+		WHERE 
+			board_id=#{boardId}
+	</update>
+
+	<update id="updateRecruitementBoard" parameterType="egovframework.burin.cmmn.board.vo.RecruitmentBoardVO">
+		UPDATE 
+			r_board
+		SET 
+			inqire_qty=0, rec_qty=#{recQty}, mntn_nm=#{mntnNm}, participation_pee=#{participationPee}
+			, board_title=#{boardTitle}, deadline_status='N'
+		WHERE 
+			board_id=#{boardId}
+	</update>
 	
 </mapper>
