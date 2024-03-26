@@ -167,11 +167,6 @@ body {
 				</div>
 			</div>
 		</form:form>
-		<div class="sub-content">
-			<div class="s-part">
-				Don't have an account?<a href="#"> Sign up</a>
-			</div>
-		</div>
 	</div>
 </body>
 <!-- <script>

@@ -9,11 +9,46 @@
 		</div>
 	 	<div id="menuDiv">
 		 	<ul class="menu">
-			    <li><a href="/board/publicView.do"><img src="<%=request.getContextPath()%>/images/menu/home.png" alt="home"></a></li>
-			    <li><a href="/board/partialView.do"><img src="<%=request.getContextPath()%>/images/menu/groups.png" alt="groups"></a></li>
-			    <li><a href="/board/rBoardList.do"><img src="<%=request.getContextPath()%>/images/menu/mountain.png" alt="mountain"></a></li>
-			    <li><a href="#"><img src="<%=request.getContextPath()%>/images/menu/medal.png" alt="medal"></a></li>
-			    <li><a href="/statistics/regionView.do"><img src="<%=request.getContextPath()%>/images/menu/areaIcon.png" alt="area"></a></li>
+				<li>
+				    <a href="/board/publicView.do">
+				        <div style="text-align: center;">
+				            <img src="<%=request.getContextPath()%>/images/menu/home.png" alt="home" style="display: block; margin: 0 auto;">
+				            <span style="display: block;">전체조회</span>
+				        </div>
+				    </a>
+				</li>
+				<li>
+				    <a href="/board/partialView.do">
+				        <div style="text-align: center;">
+				            <img src="<%=request.getContextPath()%>/images/menu/groups.png" alt="groups" style="display: block; margin: 0 auto;">
+				            <span style="display: block;">친구만조회</span>
+				        </div>
+				    </a>
+				</li>
+				<li>
+				    <a href="/board/rBoardList.do">
+				        <div style="text-align: center;">
+				            <img src="<%=request.getContextPath()%>/images/menu/mountain.png" alt="mountain" style="display: block; margin: 0 auto;">
+				            <span style="display: block;">모집게시물</span>
+				        </div>
+				    </a>
+				</li>
+				<!-- <li>
+				    <a href="#">
+				        <div style="text-align: center;">
+				            <img src="<%=request.getContextPath()%>/images/menu/medal.png" alt="medal" style="display: block; margin: 0 auto;">
+				            <span style="display: block;">뱃지조회</span>
+				        </div>
+				    </a>
+				</li> -->
+				<li>
+				    <a href="/statistics/regionView.do">
+				        <div style="text-align: center;">
+				            <img src="<%=request.getContextPath()%>/images/menu/areaIcon.png" alt="area" style="display: block; margin: 0 auto;">
+				            <span style="display: block;">지역통계</span>
+				        </div>
+				    </a>
+				</li>
 			</ul>
 	  	</div>
 	  	<%

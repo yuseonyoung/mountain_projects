@@ -22,11 +22,11 @@ public interface BoardService {
 	
 	/**
 	 * 
-	 * 전체공개 게시물 list 조회
+	 * 친구공개 게시물 list 조회
 	 * 
 	 * @return
 	 */
-	public List<BoardVO> retrievePartialBoardList(int page);
+	public List<BoardVO> retrievePartialBoardList(BoardVO boardVO);
 	/**
 	 * 
 	 * 게시물의 좋아요를 누르면 boardLike에 board와 user_id를 insert해줌

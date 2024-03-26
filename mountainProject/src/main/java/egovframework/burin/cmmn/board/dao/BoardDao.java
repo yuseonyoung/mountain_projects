@@ -17,7 +17,7 @@ public interface BoardDao {
 	
 	public List<BoardVO> selectPublicBoardList(int page);
 	
-	public List<BoardVO> selectPartialBoardList(int page);
+	public List<BoardVO> selectPartialBoardList(BoardVO boardVO);
 
 	public int selectBoardLikeList(BoardLikeVO blVO);
 

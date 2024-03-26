@@ -109,7 +109,7 @@ public class BoardController {
 		//session에서 user_id를 가져옴
 		String userId = (String)session.getAttribute("userId");
 		blVO.setUserId(userId);
-		
+
 		//10개씩 자료 boardList조회
 		List<BoardVO> list = service.retrievePublicBoardList(page);
 		//user가 좋아요를 누른 board의 목록 조회
@@ -138,9 +138,11 @@ public class BoardController {
 		//session에서 user_id를 가져옴
 		String userId = (String)session.getAttribute("userId");
 		blVO.setUserId(userId);
+		boardVO.setUserId(userId);
+		boardVO.setPage(page);
 		log.info(" ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ");
 		//10개씩 자료 boardList조회
-		List<BoardVO> list = service.retrievePartialBoardList(page);
+		List<BoardVO> list = service.retrievePartialBoardList(boardVO);
 		//user가 좋아요를 누른 board의 목록 조회
 		List<BoardLikeVO> boardLikeList = service.retrieveBoardLikeUserCount(blVO);
 		

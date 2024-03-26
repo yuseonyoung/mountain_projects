@@ -53,13 +53,15 @@ public class BoardServiceImpl implements BoardService {
 	 * 
 	 */
 	@Override
-	public List<BoardVO> retrievePartialBoardList(int page) {
+	public List<BoardVO> retrievePartialBoardList(BoardVO boardVO) {
 		//보여줄 게시물 수량
 		int postPage = 10;
 		//페이징된 게시물 
-		int boardPage = postPage * page;
+		int boardPage = postPage * boardVO.getPage();
 		
-		return boardDao.selectPartialBoardList(boardPage);
+		boardVO.setPage(boardPage);
+		
+		return boardDao.selectPartialBoardList(boardVO);
 	}
 	
 	/**

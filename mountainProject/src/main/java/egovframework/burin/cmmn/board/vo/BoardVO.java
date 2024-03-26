@@ -25,4 +25,6 @@ public class BoardVO {
     private UserVO userDetail;
     private List<CommentVO> commentVOList;
     
+    private int page;
+    
 }

@@ -886,7 +886,6 @@ String userId = (String) session.getAttribute("userId");
     	let userId = $(data).parent().find('.userIdTd').val();
     	let sessionUserId = <%=userId%>
     	
-    	alert("asdasdasdasdasdasdsadasdsadasdsd"+boardId);
     	
     	$('#listForm').css('display','none');
     	
