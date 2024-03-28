@@ -1,6 +1,6 @@
-<mxfile modified="2024-02-01T01:48:59.066Z" host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="Set_yWAXY_A2rdst4a7L" version="23.0.2" type="device">
+<mxfile modified="2024-03-27T13:37:02.162Z" host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="2HfnIj5MXB9VP4sLl2qN" version="24.2.0" type="device">
   <diagram id="WI9T0HZ2pTsCkuznbFz-" name="Page-1">
-    <mxGraphModel dx="1195" dy="1470" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1050" dy="1384" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -106,8 +106,32 @@
         <mxCell id="Dp-l3T9y7A2ENtAQ4kER-24" value="응답" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="387" y="-448" width="69" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="XnhowRrkrJVjkBkFbbWN-2" value="산림청 산 정보 API&lt;br&gt;산의 상세 정보 및 이미지 사용" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="XnhowRrkrJVjkBkFbbWN-2" value="산림청 산 정보 API&lt;br&gt;산의 상세 정보 및 이미지 사용" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="681.66" y="-612" width="150" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="LbMTCCVLktDXhIqSVZ14-1" value="" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/windows_server.svg;" vertex="1" parent="1">
+          <mxGeometry x="595" y="-329" width="66.42" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="LbMTCCVLktDXhIqSVZ14-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.435;entryY=1.073;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="FDrMeUJPrOo4Q5tURutK-11">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="527" y="-288" />
+            </Array>
+            <mxPoint x="586" y="-288" as="sourcePoint" />
+            <mxPoint x="580" y="-343.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LbMTCCVLktDXhIqSVZ14-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="527" y="-288" />
+            </Array>
+            <mxPoint x="527" y="-343" as="sourcePoint" />
+            <mxPoint x="596" y="-288" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LbMTCCVLktDXhIqSVZ14-5" value="GeoServer&lt;br&gt;벡터형식의 지리 데이터 정보를 조회" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="555" y="-254" width="136" height="56" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
