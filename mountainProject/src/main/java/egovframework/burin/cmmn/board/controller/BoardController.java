@@ -355,6 +355,9 @@ public class BoardController {
 	                            ,@Valid @ModelAttribute("totBoard")TotalBoardVO totalBoardVO
 	                            ,BindingResult bindingResult
 	                          ) {
+		
+		log.info("@@@@@@@@@@@@@@@@{}VO값 들어와야댄다",totalBoardVO);
+		
 		//유효성 검증을통해 에러가 있는지 판단
 	    if(!bindingResult.hasErrors()) {
 	        

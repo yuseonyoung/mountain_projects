@@ -84,7 +84,7 @@ String userId = (String) session.getAttribute("userId");
 					<div id="dataBox">
 						<div>
 							<label>참여일자 : </label> <input id="dateInput" class="datepicker"
-								type="text" name="cdate" />
+								type="text" name="cdate"  autocomplete="off"/>
 						</div>
 						<span id="cdate_error" class="error"></span>
 					</div>
@@ -227,7 +227,7 @@ String userId = (String) session.getAttribute("userId");
 						</div>
 					</div>
 					<div id="contentDiv">
-						<textarea id="contentText" readonly></textarea>
+						<textarea id="contentText" readonly style="height: 14vh;"></textarea>
 					</div>
 				</div>
 				<div id="btnDiv"></div>
@@ -606,8 +606,10 @@ String userId = (String) session.getAttribute("userId");
 	                  .replace(/<\/p>/g, "")
 	                  .replace(/<P>/gi, "")
 	                  .replace(/<\/P>/gi, "")
-	                  .replace(/&lt;br \/>/g, "\n");
+	                  .replace(/&lt;br \/>/g, "\n")
+	                  .replace(/&#xD;/g, "");
 	}
+
 	
 	
  	//경로에 이미지가있는지 확인해주는 함수
@@ -791,7 +793,7 @@ String userId = (String) session.getAttribute("userId");
 	
 	function selectMountain(event){
 		event.preventDefault();
-		
+		debugger;
 		let mntnNm = $('#mountainNm').val();
 		if (mntnNm) {
 		    // 새로운 input 요소 생성
@@ -818,7 +820,7 @@ String userId = (String) session.getAttribute("userId");
 		    // 생성한 input 요소를 해당 위치에 삽입
 		    $('.inputBox').replaceWith(inputElement);
 		    $('#u_mntnNm').val(mntnNm);
-			$('#mntnNm').val(mntnNm);
+			/* $('#mntnNm').val(mntnNm); */
 		}
 		
 		$('.main-popup').hide();
@@ -1052,12 +1054,18 @@ String userId = (String) session.getAttribute("userId");
     	});
     })
     
-    $('#rBoardForm').submit(function(event) {
+   $(document).on('submit', '#rBoardForm', function(event) {
         event.preventDefault();
-        
+        debugger;
         // FormData 객체를 생성하여 폼 데이터를 담습니다.
         var formData = new FormData($('#rBoardForm')[0]);
-
+        
+        let mntnNm =  $('#mntnNm').val();
+        
+        formData.append('mntnNm', mntnNm);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
         // AJAX를 이용하여 서버로 데이터를 전송합니다.
         $.ajax({
             url: $(this).attr('action'), 

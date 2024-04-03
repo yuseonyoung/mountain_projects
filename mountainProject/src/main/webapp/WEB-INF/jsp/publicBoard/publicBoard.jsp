@@ -662,8 +662,10 @@
 		
 	//취소버튼 누를시
     $(document).on('click', '#cancleBoardInsert', function() {
+    	debugger;
     	$('#imageRetrieve').empty();
-    	
+    	window.location.href = '<%=request.getContextPath()%>/board/publicView.do'; 
+
     })
     
     function openComment(element) {
