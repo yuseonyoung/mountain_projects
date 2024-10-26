@@ -9,6 +9,8 @@
 
 기술 : Java, SpringFrameWork, TilesFrameWork, OpenLayers, Qgis, EgovFrameWork, Geoserver, ERDCloud, Ajax, Javascript, Html, CSS, Jquery, PostgresSql, PostGIS, Maven, log4j
 
+산출물 및 이미지, Geoserver관련 파일은 Master branch에 있음.
+
 [로그인 화면]
 ![image](https://github.com/user-attachments/assets/d3acfbf6-5b5a-44b5-8e85-5bd65af532bc)
 
