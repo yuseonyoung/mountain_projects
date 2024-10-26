@@ -25,7 +25,6 @@ public class UserController {
 	
 	@GetMapping("/user.do")
 	public String UserList(ModelMap model) {
-		System.out.println("오긴하냐");
 		List<UserVO> list = service.retrieveUserList();
 		model.addAttribute("List", list);
 		return "jsonView";

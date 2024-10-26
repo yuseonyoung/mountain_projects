@@ -39,7 +39,6 @@ public class LoginController {
 	@PostMapping
 	public String loginTry(@Valid @ModelAttribute UserVO userVO,Errors errors, Model model
 			,HttpSession session,HttpServletRequest request){
-		log.info("여기오긴하냐");
 		boolean isValid = false;
 		
 		String path = request.getContextPath();

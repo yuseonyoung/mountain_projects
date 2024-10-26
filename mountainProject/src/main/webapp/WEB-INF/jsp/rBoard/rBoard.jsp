@@ -323,6 +323,7 @@ String userId = (String) session.getAttribute("userId");
     var flagData = false;
     var map; // 전역 변수로 map을 선언합니다.
     function showMap() {
+    	debugger;
         // 이미 map 객체가 있으면 함수를 종료합니다.
         if (map) {
             return;
