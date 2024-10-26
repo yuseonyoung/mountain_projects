@@ -1,0 +1,17 @@
+<layer>
+  <name>boundaryMap_4326</name>
+  <id>LayerInfoImpl--116a03ab:18de9714318:-7ffb</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--570ae188:124761b8d78:-7fe0</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--116a03ab:18de9714318:-7ffc</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-02-27 07:27:05.84 UTC</dateCreated>
+  <dateModified>2024-03-14 06:56:33.658 UTC</dateModified>
+</layer>

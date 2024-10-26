@@ -1,0 +1,17 @@
+<layer>
+  <name>region_statistics_4326</name>
+  <id>LayerInfoImpl-703d737b:18e2caa66a2:-7ffe</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--570ae188:124761b8d78:-7fe0</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-703d737b:18e2caa66a2:-7fff</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-03-11 08:48:52.807 UTC</dateCreated>
+  <dateModified>2024-03-11 11:55:38.301 UTC</dateModified>
+</layer>
