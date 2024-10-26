@@ -1,9 +1,12 @@
 # 등산어때
 
 [side project] 
+
 목적 : QGIS툴과 GIS가 웹에서 동작하는 방식과 EgovFramework를 공부하기 위하여 Project를 진행하였습니다.
+
 설명 : 등산인들을 위한 SNS를 제작하였고, 벤치마킹은 Instagram을 참고하여 하였습니다.
        회원은 게시물을 올릴수 있고, 모집기능을 이용하여 회원들을 모집하여 같이 등산모임을 진행하는것도 가능합니다.
+
 기술 : Java, SpringFrameWork, TilesFrameWork, OpenLayers, Qgis, EgovFrameWork, Geoserver, ERDCloud, Ajax, Javascript, Html, CSS, Jquery, PostgresSql, PostGIS, Maven, log4j
 
 [로그인 화면]
