@@ -9,6 +9,8 @@
 
 기술 : Java, SpringFrameWork, TilesFrameWork, OpenLayers, Qgis, EgovFrameWork, Geoserver, ERDCloud, Ajax, Javascript, Html, CSS, Jquery, PostgresSql, PostGIS, Maven, log4j
 
+API : 공공데이터 포털의 산림청_산 정보 조회 openAPI, 공공데이터 포털의 100대명산목록기본정보조회 openAPI
+
 산출물 및 이미지, Geoserver관련 파일은 Master branch에 있음.
 
 [로그인 화면]
@@ -77,7 +79,8 @@
 ![image](https://github.com/user-attachments/assets/dba428d0-095a-4eb2-a733-a0d76891a44f)
 
 {산 상세조회 - 가리왕산 클릭 시}
-
+※ 산림청_산 정보 조회 openAPI를 이용하여 산의 이미지 및 상세정보 조회
+※ 100대명산목록 기본정보조회 openAPI를 이용하여 산의 좌표 및 정보를 조회
 => 산을 검색해서 해당 산을 찾으면 등록버튼을 눌러 산을 등록한다
 
 ![image](https://github.com/user-attachments/assets/23dea9f2-432e-413a-8db0-bcbdc2725fac)
